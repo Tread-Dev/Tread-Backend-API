@@ -41,6 +41,10 @@ const ClientSchema = new mongoose.Schema({
     type: String,
     maxlength: [20, 'Phone number can not be longer than 20 characters'],
   },
+  photo: {
+    type: String,
+    default: 'no-image.jpg',
+  },
   fitnessGoal: {
     type: String,
     required: true,

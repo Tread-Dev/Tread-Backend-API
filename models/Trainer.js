@@ -21,6 +21,10 @@ const TrainerSchema = new mongoose.Schema({
       'Please add a valid email',
     ],
   },
+  photo: {
+    type: String,
+    default: 'no-image.jpg',
+  },
   role: {
     type: String,
     enum: ['trainer'],

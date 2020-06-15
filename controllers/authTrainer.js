@@ -3,6 +3,7 @@ const asyncHandler = require('../middleware/async');
 const Trainer = require('../models/Trainer');
 const sendEmail = require('../utils/sendEmail');
 const crypto = require('crypto');
+const path = require('path');
 
 // @desc     Register Trainer User
 // @route    POST /api/v1/trainer/auth/register
@@ -211,6 +212,73 @@ exports.resetPassword = asyncHandler(async (req, res, next) => {
 
   //Call sendTokenResponse to generate token and send it in a cookie
   sendTokenResponse(trainer, 200, res);
+});
+
+// @desc     Upload photo for Client
+// @route    PUT /api/v1/trainer/:id/photo
+// @access   Private
+exports.trainerPhotoUpload = asyncHandler(async (req, res, next) => {
+  //Update Item in DB based on ID
+  console.log(req.body);
+  const trainer = await Trainer.findById(req.params.id);
+
+  //Check if bootcamp exists - Error handling
+  if (!trainer) {
+    return next(
+      new errorResponse(`Bootcamp not found with ID of ${req.params.id}`, 404)
+    );
+  }
+
+  //Make sure the user is Bootcamp Owner
+  // if (client.user.toString() !== req.user.id && req.user.role !== 'admin') {
+  //   return next(
+  //     new errorResponse(
+  //       `User with ID of ${req.params.id} is not authorized to update bootcamp photo`,
+  //       401
+  //     )
+  //   );
+  // }
+
+  if (!req.files) {
+    return next(new errorResponse(`Please upload a File`, 400));
+  }
+
+  const file = req.files.file;
+
+  //Make sure the file is a image
+  if (!file.mimetype.startsWith('image')) {
+    return next(new errorResponse(`Please upload an Image file`, 400));
+  }
+
+  //Check for image file size
+  if (file.size > process.env.MAX_FILE_UPLOAD) {
+    return next(
+      new errorResponse(
+        `Please upload an Image file less than ${process.env.MAX_FILE_UPLOAD}`,
+        400
+      )
+    );
+  }
+
+  //Rename file name according to Bootcamp ID and extension
+  file.name = `photo_${trainer._id}${path.parse(file.name).ext}`;
+  console.log(file.name);
+
+  //Upload the file to our server
+  file.mv(
+    `${process.env.FILE_UPLOAD_PATH}/trainer/${file.name}`,
+    async (err) => {
+      if (err) {
+        console.error(err);
+        return next(new errorResponse(`Problem with File upload`, 400));
+      }
+
+      //Insert file name into DB
+      await Trainer.findByIdAndUpdate(req.params.id, { photo: file.name });
+
+      res.status(200).json({ success: true, data: file.name });
+    }
+  );
 });
 
 //Custom function to create cookie and token

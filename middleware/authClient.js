@@ -42,10 +42,10 @@ exports.protect = asyncHandler(async (req, res, next) => {
 //Grant access to specific roles (admin, publisher)
 // exports.authorize = (...roles) => {
 //   return (req, res, next) => {
-//     if (!roles.includes(req.trainer.role)) {
+//     if (!roles.includes(req.client.role)) {
 //       return next(
 //         new errorResponse(
-//           `User role - ${req.trainer.role} is not authorized to access this route`,
+//           `User role - ${req.client.role} is not authorized to access this route`,
 //           401
 //         )
 //       );
