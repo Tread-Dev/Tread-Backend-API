@@ -1,0 +1,239 @@
+const errorResponse = require('../utils/errorResponse');
+const asyncHandler = require('../middleware/async');
+const Trainer = require('../models/Trainer');
+const sendEmail = require('../utils/sendEmail');
+const crypto = require('crypto');
+
+// @desc     Register Trainer User
+// @route    POST /api/v1/trainer/auth/register
+// @access   Public
+exports.register = asyncHandler(async (req, res, next) => {
+  //Pull out user information from the body
+  const {
+    firstName,
+    lastName,
+    email,
+    password,
+    role,
+    trainerType,
+    numberOfClients,
+  } = req.body;
+
+  //Create new user
+  const trainer = await Trainer.create({
+    firstName: firstName,
+    lastName: lastName,
+    email: email,
+    password: password,
+    role: role,
+    trainerType: trainerType,
+    numberOfClients: numberOfClients,
+  });
+
+  //Call sendTokenResponse to generate token and send it in a cookie
+  sendTokenResponse(trainer, 200, res);
+});
+
+// @desc     Login Trainer User
+// @route    POST /api/v1/trainer/auth/login
+// @access   Public
+exports.login = asyncHandler(async (req, res, next) => {
+  //Pull out user information from the body
+  const { email, password } = req.body;
+
+  //Email & Password validation
+  if (!email || !password) {
+    return next(new errorResponse(`Please provide an email and password`, 400));
+  }
+
+  //Check for User
+  const trainer = await Trainer.findOne({ email: email }).select('+password');
+
+  if (!trainer) {
+    return next(new errorResponse(`Invalid credentials`, 401));
+  }
+
+  //Check if password matches | *user not User*
+  const isMatch = await trainer.matchPassword(password);
+
+  if (!isMatch) {
+    return next(new errorResponse(`Invalid credentials`, 401));
+  }
+
+  //Call sendTokenResponse to generate token and send it in a cookie
+  sendTokenResponse(trainer, 200, res);
+});
+
+// @desc     Get Logged in User
+// @route    POST /api/v1/auth/me
+// @access   Private
+exports.getMe = asyncHandler(async (req, res, next) => {
+  //user id will come from auth middleware's response
+  const trainer = await Trainer.findById(req.trainer.id);
+
+  res.status(200).json({ success: true, data: trainer });
+});
+
+// @desc     Logout Trainer user / clear cookie
+// @route    GET /api/v1/trainer/auth/logout
+// @access   Private
+exports.logout = asyncHandler(async (req, res, next) => {
+  res.cookie('token', 'none', {
+    expires: new Date(Date.now() + 10 * 1000),
+    httpOnly: true,
+  });
+
+  res.status(200).json({ success: true, data: {} });
+});
+
+// @desc     Update Trainer user details
+// @route    POST /api/v1/trainer/auth/updatedetails
+// @access   Private
+exports.updateDetails = asyncHandler(async (req, res, next) => {
+  //Take only the essential fields from req.body to update - Ignore password, role etc if at all passed
+  const fieldsToUpdate = {
+    firstName: req.body.firstName,
+    lastName: req.body.lastName,
+    email: req.body.email,
+    trainerType: req.body.trainerType,
+    numberOfClients: req.body.numberOfClients,
+  };
+
+  //Trainer id will come from auth middleware's response
+  const trainer = await Trainer.findByIdAndUpdate(
+    req.trainer.id,
+    fieldsToUpdate,
+    {
+      new: true,
+      runValidators: true,
+    }
+  );
+
+  res.status(200).json({ success: true, data: trainer });
+});
+
+// @desc     Update password of Logged in Trainer User
+// @route    PUT /api/v1/trainer/auth/updatepassword
+// @access   Private
+exports.updatePassword = asyncHandler(async (req, res, next) => {
+  //user id will come from auth middleware's response
+  const trainer = await Trainer.findById(req.trainer.id).select('+password');
+
+  //Check if current password mathches
+  if (!(await trainer.matchPassword(req.body.currentPassword))) {
+    return next(new errorResponse('Password Incorrect', 401));
+  }
+
+  //If password matches then update new password
+  trainer.password = req.body.newPassword;
+  await trainer.save();
+
+  sendTokenResponse(trainer, 200, res);
+});
+
+// @desc     Forgot Password
+// @route    POST /api/v1/trainer/auth/forgotpassword
+// @access   Public
+exports.forgotPassword = asyncHandler(async (req, res, next) => {
+  //Find the account associated with this email
+  const trainer = await Trainer.findOne({ email: req.body.email });
+
+  //Check if user exists
+  if (!trainer) {
+    return next(new errorResponse(`There is no user with that email`, 404));
+  }
+
+  //Get reset token - getResetPasswordToken() defined in user model
+  const resetToken = trainer.getResetPasswordToken();
+  console.log(resetToken);
+
+  //Update token and expiry in Databse
+  await trainer.save({ validateBeforeSave: false });
+
+  //Send Mail to user
+  //Create reset URL
+  const resetURL = `${req.protocol}://${req.get(
+    'host'
+  )}/api/v1/trainer/auth/resetpassword/${resetToken}`;
+
+  //Create message with reset URL
+  const message = `You have requested to reset your password. Please make a PUT request to: \n\n ${resetURL}`;
+
+  //Send Email
+  try {
+    await sendEmail({
+      email: trainer.email,
+      subject: 'Password reset token',
+      message: message,
+    });
+
+    res
+      .status(200)
+      .json({ success: true, data: 'Email Sent - check your mail box' });
+  } catch (err) {
+    console.log(err);
+    trainer.getResetPasswordToken = undefined;
+    trainer.getResetPasswordExpire = undefined;
+
+    //Save user
+    await trainer.save({ validateBeforeSave: false });
+
+    return next(new errorResponse('Email could not be sent', 500));
+  }
+});
+
+// @desc     Reset Password
+// @route    PUT /api/v1/trainer/auth/resetpassword:resettoken
+// @access   Private
+exports.resetPassword = asyncHandler(async (req, res, next) => {
+  //Get hashed token
+  const resetPasswordToken = crypto
+    .createHash('sha256')
+    .update(req.params.resettoken)
+    .digest('hex');
+
+  //Find user by expiration token
+  const trainer = await Trainer.findOne({
+    resetPasswordToken: resetPasswordToken,
+    resetPasswordExpire: { $gt: Date.now() },
+  });
+
+  //Find if such a user exits // token expired
+  if (!trainer) {
+    return next(new errorResponse('Invalid Token', 400));
+  }
+
+  //Set new password (new password comes from req body)
+  trainer.password = req.body.password;
+  trainer.resetPasswordToken = undefined;
+  trainer.resetPasswordExpire = undefined;
+  await trainer.save();
+
+  //Call sendTokenResponse to generate token and send it in a cookie
+  sendTokenResponse(trainer, 200, res);
+});
+
+//Custom function to create cookie and token
+//Get token from model, create cookie ans send response
+const sendTokenResponse = (trainer, statusCode, res) => {
+  //Create jwt token
+  const token = trainer.getSignedJwtToken();
+
+  const options = {
+    expires: new Date(
+      Date.now() + process.env.JWT_COOKIE_EXPIRE * 24 * 60 * 60 * 1000
+    ),
+    httpOnly: true,
+  };
+
+  //Set secure option in *production* mode
+  if (process.env.NODE_ENV === 'production') {
+    options.secure = true;
+  }
+
+  //Send response with cookie
+  res
+    .status(statusCode)
+    .cookie('token', token, options)
+    .json({ success: true, token: token });
+};
