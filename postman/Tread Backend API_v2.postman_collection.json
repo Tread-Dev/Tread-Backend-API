@@ -1,0 +1,935 @@
+{
+	"info": {
+		"_postman_id": "14e47d02-cc9b-47d3-827e-ede3238217e9",
+		"name": "Tread Backend API",
+		"description": "The complete backend API for tread with CRUD functionalities.",
+		"schema": "https://schema.getpostman.com/json/collection/v2.0.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Trainer Auth",
+			"item": [
+				{
+					"name": "Register Trainer User",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "acd57656-be32-4c36-8070-e98ad428407f",
+								"exec": [
+									"pm.environment.set(\"TOKEN\", pm.response.json().token)"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"description": "Content Type JSON",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"firstName\" : \"Karthik1234\",\r\n    \"lastName\": \"Sivacharan1234\",\r\n    \"email\": \"k1234@gmail.com\",\r\n    \"trainerType\" : \"HIIT\",\r\n    \"numberOfClients\": \"5-10\",\r\n    \"password\": \"123456\"\r\n\r\n\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "http://localhost:5000/api/v1/trainer/auth/register"
+					},
+					"response": []
+				},
+				{
+					"name": "Login Trainer User",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "f77a6ff7-6269-4a47-b23e-49acdef9ff75",
+								"exec": [
+									"pm.environment.set(\"TOKEN\", pm.response.json().token)"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"description": "Content Type JSON",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"email\": \"k1234@gmail.com\",\r\n    \"password\": \"123456\"\r\n\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "http://localhost:5000/api/v1/trainer/auth/login"
+					},
+					"response": []
+				},
+				{
+					"name": "Logout Trainer User",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"description": "Content Type JSON",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "http://localhost:5000/api/v1/trainer/auth/logout"
+					},
+					"response": []
+				},
+				{
+					"name": "Get Logged In Trainer User",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": {
+								"token": "{{TOKEN}}"
+							}
+						},
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"description": "Content Type JSON",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "http://localhost:5000/api/v1/trainer/auth/me"
+					},
+					"response": []
+				},
+				{
+					"name": "Update Logged In Trainer User Details",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "acd57656-be32-4c36-8070-e98ad428407f",
+								"exec": [
+									"pm.environment.set(\"TOKEN\", pm.response.json().token)"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"description": "Content Type JSON",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"firstName\" : \"K\",\r\n    \"lastName\": \"S\",\r\n    \"email\": \"ks@gmail.com\",\r\n    \"trainerType\" : \"Yoga\",\r\n    \"numberOfClients\": \"1-5\"\r\n\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "http://localhost:5000/api/v1/trainer/auth/updatedetails"
+					},
+					"response": []
+				},
+				{
+					"name": "Update Password of Trainer User",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "f77a6ff7-6269-4a47-b23e-49acdef9ff75",
+								"exec": [
+									"pm.environment.set(\"TOKEN\", pm.response.json().token)"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"description": "Content Type JSON",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"currentPassword\": \"123456\",\r\n    \"newPassword\": \"1234567\"\r\n\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "http://localhost:5000/api/v1/trainer/auth/updatepassword"
+					},
+					"response": []
+				},
+				{
+					"name": "Forgot Password Trainer User",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "f77a6ff7-6269-4a47-b23e-49acdef9ff75",
+								"exec": [
+									"pm.environment.set(\"TOKEN\", pm.response.json().token)"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"description": "Content Type JSON",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"email\": \"ks@gmail.com\"\r\n\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "http://localhost:5000/api/v1/trainer/auth/forgotpassword"
+					},
+					"response": []
+				},
+				{
+					"name": "Reset Password Trainer User",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "f77a6ff7-6269-4a47-b23e-49acdef9ff75",
+								"exec": [
+									"pm.environment.set(\"TOKEN\", pm.response.json().token)"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"description": "Content Type JSON",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"password\": \"123456789\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "http://localhost:5000/api/v1/trainer/auth/resetpassword/66932d744a3290fe44d1252554f44b934c59ac47"
+					},
+					"response": []
+				},
+				{
+					"name": "Upload Trainer Photo by ID",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": {
+								"token": "{{TOKEN}}"
+							}
+						},
+						"method": "PUT",
+						"header": [
+							{
+								"description": "Content Type JSON",
+								"key": "Content-Type",
+								"type": "text",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "file",
+									"type": "file",
+									"src": "/C:/Users/Karthik Sivacharan/Downloads/roshan.jpg"
+								}
+							]
+						},
+						"url": "{{URL}}/api/v1/trainer/auth/5ee7c33e15276465b07a3a6c/photo"
+					},
+					"response": []
+				},
+				{
+					"name": "Add New Client",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{    \"firstName\": \"Karthik\",\r\n    \"lastName\": \"Client\",\r\n    \"email\": \"kc@gmail.com\",\r\n    \"clientType\": \"hybrid\"}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "{{URL}}/api/v1/trainer/auth/addclient"
+					},
+					"response": []
+				},
+				{
+					"name": "Get All Clients",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": {
+								"token": "{{TOKEN}}"
+							}
+						},
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"description": "Content Type JSON",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "http://localhost:5000/api/v1/trainer/auth/getclients"
+					},
+					"response": []
+				}
+			],
+			"protocolProfileBehavior": {}
+		},
+		{
+			"name": "Client Auth",
+			"item": [
+				{
+					"name": "Register Client User",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "acd57656-be32-4c36-8070-e98ad428407f",
+								"exec": [
+									"pm.environment.set(\"TOKEN\", pm.response.json().token)"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"description": "Content Type JSON",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"firstName\": \"Karthik\",\r\n  \"lastName\":\"Sivacharan\",\r\n  \"password\": \"123456\",\r\n  \"phone\": 9489869896,\r\n  \"fitnessGoal\": \"I am already fit\",\r\n  \"timeZone\": \"Asia/Calcutta\",\r\n  \"height\": 6,\r\n  \"weight\": 75,\r\n  \"gender\": \"male\",\r\n  \"dob\": \"1997-06-15T18:51:42.702+00:00\"\r\n\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "http://localhost:5000/api/v1/client/auth/register/5ee8c58e9697ac71c4e6aff6"
+					},
+					"response": []
+				},
+				{
+					"name": "Login Client User",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "f77a6ff7-6269-4a47-b23e-49acdef9ff75",
+								"exec": [
+									"pm.environment.set(\"TOKEN\", pm.response.json().token)"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"description": "Content Type JSON",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"email\": \"ansh@gmail.com\",\r\n    \"password\": \"123456789\"\r\n\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "http://localhost:5000/api/v1/client/auth/login"
+					},
+					"response": []
+				},
+				{
+					"name": "Logout Client User",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"description": "Content Type JSON",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "http://localhost:5000/api/v1/client/auth/logout"
+					},
+					"response": []
+				},
+				{
+					"name": "Get Logged In Client User",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": {
+								"token": "{{TOKEN}}"
+							}
+						},
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"description": "Content Type JSON",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "http://localhost:5000/api/v1/client/auth/me"
+					},
+					"response": []
+				},
+				{
+					"name": "Update Logged In Client User Details",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "acd57656-be32-4c36-8070-e98ad428407f",
+								"exec": [
+									"pm.environment.set(\"TOKEN\", pm.response.json().token)"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"description": "Content Type JSON",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n\"firstName\": \"M\",\r\n    \"lastName\": \"D\",\r\n    \"email\": \"msdhoni@gmail.com\",\r\n    \"phone\": \"9876543210\",\r\n    \"fitnessGoal\": \"Want to reduce weight\",\r\n    \"timeZone\": \"US\",\r\n    \"height\": 5,\r\n    \"weight\": 56\r\n\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "http://localhost:5000/api/v1/client/auth/updatedetails"
+					},
+					"response": []
+				},
+				{
+					"name": "Update Password of Client User",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "f77a6ff7-6269-4a47-b23e-49acdef9ff75",
+								"exec": [
+									"pm.environment.set(\"TOKEN\", pm.response.json().token)"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"description": "Content Type JSON",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"currentPassword\": \"123456\",\r\n    \"newPassword\": \"1234567\"\r\n\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "http://localhost:5000/api/v1/client/auth/updatepassword"
+					},
+					"response": []
+				},
+				{
+					"name": "Forgot Password Client User",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "f77a6ff7-6269-4a47-b23e-49acdef9ff75",
+								"exec": [
+									"pm.environment.set(\"TOKEN\", pm.response.json().token)"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"description": "Content Type JSON",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"email\": \"ansh@gmail.com\"\r\n\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "http://localhost:5000/api/v1/client/auth/forgotpassword"
+					},
+					"response": []
+				},
+				{
+					"name": "Reset Password Client User",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "f77a6ff7-6269-4a47-b23e-49acdef9ff75",
+								"exec": [
+									"pm.environment.set(\"TOKEN\", pm.response.json().token)"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"description": "Content Type JSON",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"password\": \"123456789\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "http://localhost:5000/api/v1/client/auth/resetpassword/5b19acd83e6c1fa3ecc7b9426e15af24ad649e1a"
+					},
+					"response": []
+				},
+				{
+					"name": "Upload Client Photo by ID",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": {
+								"token": "{{TOKEN}}"
+							}
+						},
+						"method": "PUT",
+						"header": [
+							{
+								"description": "Content Type JSON",
+								"key": "Content-Type",
+								"type": "text",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "file",
+									"type": "file",
+									"src": "/G:/[FreeCourseSite.com] Udemy - Node.js API Masterclass With Express & MongoDB/bootcamp.jpeg"
+								}
+							]
+						},
+						"url": "{{URL}}/api/v1/client/auth/5ee7d6386be702776034f2f5/photo"
+					},
+					"response": []
+				}
+			],
+			"protocolProfileBehavior": {}
+		},
+		{
+			"name": "Exercises",
+			"item": [
+				{
+					"name": "Create Exercise",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"name\": \"Cardio Blast\",\r\n    \"videoLink\": \"http://www.vimeo.com\",\r\n  \"description\": \"Cardio High intensity workout\",\r\n  \"muscleGroup\": \"Legs, Arms\",\r\n  \"trainer\": \"5ee7c33e15276465b07a3a6c\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "{{URL}}/api/v1/trainer/exercises/"
+					},
+					"response": []
+				},
+				{
+					"name": "Get all Exercises by Trainer ID",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "{{URL}}/api/v1/trainer/exercises/"
+					},
+					"response": []
+				},
+				{
+					"name": "Get Exercise by Exercise ID",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "{{URL}}/api/v1/trainer/exercises/5ee8946107470c7780a04852"
+					},
+					"response": []
+				},
+				{
+					"name": "Update Exercise",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": {
+								"token": "{{TOKEN}}"
+							}
+						},
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"name\": \"Cardio Blast III\",\r\n    \"videoLink\": \"http://www.vimeo-you.com\",\r\n  \"description\": \"Cardio High intensity workout 3\",\r\n  \"muscleGroup\": \"Legs, Arms, Chest\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "{{URL}}/api/v1/trainer/exercises/5ee899e8ec12057780d1167e"
+					},
+					"response": []
+				},
+				{
+					"name": "Delete Exercise",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": {
+								"token": "{{TOKEN}}"
+							}
+						},
+						"method": "DELETE",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "{{URL}}/api/v1/trainer/exercises/5ee899e8ec12057780d1167e"
+					},
+					"response": []
+				}
+			],
+			"protocolProfileBehavior": {}
+		},
+		{
+			"name": "Workouts",
+			"item": [
+				{
+					"name": "Create Workout",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"name\": \"Cardio Workout I\",\r\n  \"description\": \"Cardio High intensity workout - I\",\r\n  \"trainer\": \"5ee7c33e15276465b07a3a6c\",\r\n  \"workoutObj\": [{\r\n    \"exerciseID\": \"5ee8946107470c7780a04852\",\r\n    \"cardIndex\": 1,\r\n    \"reps\": 5,\r\n    \"time\": 0,\r\n    \"rest\": 10\r\n  },{\r\n    \"exerciseID\": \"5ee8946107470c7780a04852\",\r\n    \"cardIndex\": 2,\r\n    \"reps\": 0,\r\n    \"time\": 20,\r\n    \"rest\": 5\r\n  }]\r\n\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "{{URL}}/api/v1/trainer/workouts/"
+					},
+					"response": []
+				},
+				{
+					"name": "Get all Workouts by Trainer ID",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "{{URL}}/api/v1/trainer/workouts/"
+					},
+					"response": []
+				},
+				{
+					"name": "Get Workout by Workout ID",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "{{URL}}/api/v1/trainer/workouts/5ee8a4edb534913c2c8eb1a2"
+					},
+					"response": []
+				},
+				{
+					"name": "Update Workout",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": {
+								"token": "{{TOKEN}}"
+							}
+						},
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"name\": \"Cardio Workout II\",\r\n  \"description\": \"Cardio High intensity workout - II\",\r\n  \"trainer\": \"5ee7c33e15276465b07a3a6c\",\r\n  \"workoutObj\": [{\r\n    \"exerciseID\": \"5ee8946107470c7780a04852\",\r\n    \"cardIndex\": 1,\r\n    \"reps\": 7,\r\n    \"time\": 0,\r\n    \"rest\": 10\r\n  },{\r\n    \"exerciseID\": \"5ee8946107470c7780a04852\",\r\n    \"cardIndex\": 2,\r\n    \"reps\": 0,\r\n    \"time\": 20,\r\n    \"rest\": 7\r\n  }]\r\n\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "{{URL}}/api/v1/trainer/workouts/5ee8a4edb534913c2c8eb1a2"
+					},
+					"response": []
+				},
+				{
+					"name": "Delete Workout",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": {
+								"token": "{{TOKEN}}"
+							}
+						},
+						"method": "DELETE",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "{{URL}}/api/v1/trainer/workouts/5ee8a4edb534913c2c8eb1a2"
+					},
+					"response": []
+				}
+			],
+			"protocolProfileBehavior": {}
+		}
+	],
+	"protocolProfileBehavior": {}
+}
