@@ -40,7 +40,7 @@ exports.addExercise = asyncHandler(async (req, res, next) => {
 
 // @desc     Get Exercises by Trainer ID
 // @route    GET /api/v1/trainer/exercises/
-// @access   Public
+// @access   Private
 exports.getExercises = asyncHandler(async (req, res, next) => {
   //Fetch exercises by ID
   console.log(req.trainer.id);
@@ -59,9 +59,9 @@ exports.getExercises = asyncHandler(async (req, res, next) => {
   res.status(200).json({ success: true, data: exercises });
 });
 
-// @desc     Get Exercises by Exercise ID
+// @desc     Get Exercise by Exercise ID
 // @route    GET /api/v1/trainer/exercises/:exerciseID
-// @access   Public
+// @access   Private
 exports.getExercisebyId = asyncHandler(async (req, res, next) => {
   //Fetch exercise by ID
   console.log(req.params.exerciseID);

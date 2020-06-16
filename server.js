@@ -18,6 +18,7 @@ connectDB();
 const authTrainer = require('./routes/authTrainer');
 const authClient = require('./routes/authClient');
 const exercise = require('./routes/exercise');
+const workout = require('./routes/workout');
 
 //Init app
 const app = express();
@@ -43,6 +44,7 @@ app.use(fileupload());
 app.use('/api/v1/trainer/auth', authTrainer);
 app.use('/api/v1/client/auth', authClient);
 app.use('/api/v1/trainer/exercises', exercise);
+app.use('/api/v1/trainer/workouts', workout);
 
 //Error Middleware
 app.use(errorHandler);
