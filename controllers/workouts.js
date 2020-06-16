@@ -9,11 +9,11 @@ const asyncHandler = require('../middleware/async');
 exports.addWorkout = asyncHandler(async (req, res, next) => {
   // Trainer ID will be sent in the req body
   //Check if the particular trainer to which the exercise needs to be added exists or not
-  const trainer = await Trainer.findById(req.body.trainer);
+  const trainer = await Trainer.findById(req.trainer.id);
   if (!trainer) {
     return next(
       new errorResponse(
-        `No trainer exists with the ID of ${req.body.trainer}`,
+        `No trainer exists with the ID of ${req.trainer.id}`,
         404
       )
     );
@@ -29,6 +29,8 @@ exports.addWorkout = asyncHandler(async (req, res, next) => {
   //   );
   // }
 
+  //Pass the current Trainer ID to body
+  req.body.trainer = req.trainer.id;
   //Create the new exercise
   const workout = await Workout.create(req.body);
 
@@ -109,6 +111,8 @@ exports.updateWorkout = asyncHandler(async (req, res, next) => {
     );
   }
 
+  //Add current logged IN trainer's ID to the body
+  req.body.trainer = req.trainer.id;
   workout = await Workout.findOneAndUpdate(req.params.workoutID, req.body, {
     new: true,
     runValidators: true,

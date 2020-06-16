@@ -18,6 +18,10 @@ const {
 //Auth Protect Middleware
 const { protect } = require('../middleware/authTrainer');
 
+const advancedResults = require('../middleware/advancedResults');
+
+const Client = require('../models/Client');
+
 //Create route
 router.post('/register', register);
 router.post('/login', login);
@@ -36,6 +40,8 @@ router.route('/:id/photo').put(protect, trainerPhotoUpload);
 router.route('/addclient').post(protect, addClient);
 
 //Route /api/v1/trainer/getclients
-router.route('/getclients').get(protect, getClients);
+router
+  .route('/getclients')
+  .get(protect, advancedResults(Client, 'clients'), getClients);
 
 module.exports = router;
