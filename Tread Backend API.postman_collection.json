@@ -1,0 +1,802 @@
+{
+	"id": "14e47d02-cc9b-47d3-827e-ede3238217e9",
+	"name": "Tread Backend API",
+	"description": "The complete backend API for tread with CRUD functionalities.",
+	"auth": null,
+	"events": null,
+	"variables": [],
+	"order": [],
+	"folders_order": [
+		"bdbdc1ee-fdcd-4a0d-ba8f-f20ee78def61",
+		"3e2987d4-0e36-416c-9611-64ec0bf18b14"
+	],
+	"protocolProfileBehavior": {},
+	"folders": [
+		{
+			"id": "3e2987d4-0e36-416c-9611-64ec0bf18b14",
+			"name": "Client Auth",
+			"description": "",
+			"auth": null,
+			"events": null,
+			"collection": "14e47d02-cc9b-47d3-827e-ede3238217e9",
+			"folder": null,
+			"order": [
+				"b6ab5161-836a-477f-a527-f170ae8cde52",
+				"325f1fdf-afae-4f47-8dab-3b5b3f2f280b",
+				"105f74df-31be-45bb-b621-1197ebe7ec2a",
+				"420ad1bf-c3a0-4b16-bad3-47764af783c2",
+				"f22fe8ae-e86d-4972-b37d-e214df202f58",
+				"d5f948c0-d4f2-4d3b-b39e-2c998b51aa43",
+				"e9b382f5-65e2-4389-bb92-55eb8fe354e8",
+				"65e10392-0c63-440b-90f9-6e0692efb7ba",
+				"a8d932f0-a442-41a0-be73-0a67d8d29aba"
+			],
+			"folders_order": [],
+			"protocolProfileBehavior": {}
+		},
+		{
+			"id": "bdbdc1ee-fdcd-4a0d-ba8f-f20ee78def61",
+			"name": "Trainer Auth",
+			"description": "",
+			"auth": null,
+			"events": null,
+			"collection": "14e47d02-cc9b-47d3-827e-ede3238217e9",
+			"folder": null,
+			"order": [
+				"d7f45edf-33f0-4a3f-aad6-9ea302d8babf",
+				"746fb011-ffee-43ce-8aaf-858e4e17428e",
+				"e7cf2dc8-4056-4f5f-91b8-4c3be8d7eb1e",
+				"df591ee4-ef54-4b5b-b247-c01c17484012",
+				"bb6f88fb-e43b-45a6-aa84-4427a2412c14",
+				"6cf9e4b8-8099-40d2-a0e3-965f87e5161e",
+				"77522903-c78c-4555-b358-1b96264a4948",
+				"5db1f47e-54fa-4858-a204-12fb59c70f0a",
+				"a39a5657-c4b8-4722-a460-17dcfb4005d6"
+			],
+			"folders_order": [],
+			"protocolProfileBehavior": {}
+		}
+	],
+	"requests": [
+		{
+			"id": "105f74df-31be-45bb-b621-1197ebe7ec2a",
+			"name": "Logout Client User",
+			"url": "http://localhost:5000/api/v1/client/auth/logout",
+			"description": "",
+			"data": [],
+			"dataOptions": {
+				"raw": {
+					"language": "json"
+				}
+			},
+			"dataMode": "raw",
+			"headerData": [
+				{
+					"key": "Content-Type",
+					"value": "application/json",
+					"description": "Content Type JSON",
+					"type": "text",
+					"enabled": true
+				}
+			],
+			"method": "GET",
+			"pathVariableData": [],
+			"queryParams": [],
+			"auth": null,
+			"events": null,
+			"folder": "3e2987d4-0e36-416c-9611-64ec0bf18b14",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"rawModeData": "",
+			"headers": "Content-Type: application/json\n",
+			"pathVariables": {}
+		},
+		{
+			"id": "325f1fdf-afae-4f47-8dab-3b5b3f2f280b",
+			"name": "Login Client User",
+			"url": "http://localhost:5000/api/v1/client/auth/login",
+			"description": "",
+			"data": [],
+			"dataOptions": {
+				"raw": {
+					"language": "json"
+				}
+			},
+			"dataMode": "raw",
+			"headerData": [
+				{
+					"key": "Content-Type",
+					"value": "application/json",
+					"description": "Content Type JSON",
+					"type": "text",
+					"enabled": true
+				}
+			],
+			"method": "POST",
+			"pathVariableData": [],
+			"queryParams": [],
+			"auth": null,
+			"events": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "f77a6ff7-6269-4a47-b23e-49acdef9ff75",
+						"exec": [
+							"pm.environment.set(\"TOKEN\", pm.response.json().token)"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"folder": "3e2987d4-0e36-416c-9611-64ec0bf18b14",
+			"rawModeData": "{\r\n    \"email\": \"ansh@gmail.com\",\r\n    \"password\": \"123456789\"\r\n\r\n}",
+			"headers": "Content-Type: application/json\n",
+			"pathVariables": {}
+		},
+		{
+			"id": "420ad1bf-c3a0-4b16-bad3-47764af783c2",
+			"name": "Get Logged In Client User",
+			"url": "http://localhost:5000/api/v1/client/auth/me",
+			"description": "",
+			"data": [],
+			"dataOptions": {
+				"raw": {
+					"language": "json"
+				}
+			},
+			"dataMode": "raw",
+			"headerData": [
+				{
+					"key": "Content-Type",
+					"value": "application/json",
+					"description": "Content Type JSON",
+					"type": "text",
+					"enabled": true
+				}
+			],
+			"method": "GET",
+			"pathVariableData": [],
+			"queryParams": [],
+			"auth": {
+				"type": "bearer",
+				"bearer": [
+					{
+						"key": "token",
+						"value": "{{TOKEN}}"
+					}
+				]
+			},
+			"events": null,
+			"folder": "3e2987d4-0e36-416c-9611-64ec0bf18b14",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"rawModeData": "",
+			"headers": "Content-Type: application/json\n",
+			"pathVariables": {}
+		},
+		{
+			"id": "5db1f47e-54fa-4858-a204-12fb59c70f0a",
+			"name": "Reset Password Trainer User",
+			"url": "http://localhost:5000/api/v1/trainer/auth/resetpassword/66932d744a3290fe44d1252554f44b934c59ac47",
+			"description": "",
+			"data": [],
+			"dataOptions": {
+				"raw": {
+					"language": "json"
+				}
+			},
+			"dataMode": "raw",
+			"headerData": [
+				{
+					"key": "Content-Type",
+					"value": "application/json",
+					"description": "Content Type JSON",
+					"type": "text",
+					"enabled": true
+				}
+			],
+			"method": "PUT",
+			"pathVariableData": [],
+			"queryParams": [],
+			"auth": null,
+			"events": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "f77a6ff7-6269-4a47-b23e-49acdef9ff75",
+						"exec": [
+							"pm.environment.set(\"TOKEN\", pm.response.json().token)"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"folder": "bdbdc1ee-fdcd-4a0d-ba8f-f20ee78def61",
+			"rawModeData": "{\r\n    \"password\": \"123456789\"\r\n}",
+			"headers": "Content-Type: application/json\n",
+			"pathVariables": {}
+		},
+		{
+			"id": "65e10392-0c63-440b-90f9-6e0692efb7ba",
+			"name": "Reset Password Client User",
+			"url": "http://localhost:5000/api/v1/client/auth/resetpassword/5b19acd83e6c1fa3ecc7b9426e15af24ad649e1a",
+			"description": "",
+			"data": [],
+			"dataOptions": {
+				"raw": {
+					"language": "json"
+				}
+			},
+			"dataMode": "raw",
+			"headerData": [
+				{
+					"key": "Content-Type",
+					"value": "application/json",
+					"description": "Content Type JSON",
+					"type": "text",
+					"enabled": true
+				}
+			],
+			"method": "PUT",
+			"pathVariableData": [],
+			"queryParams": [],
+			"auth": null,
+			"events": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "f77a6ff7-6269-4a47-b23e-49acdef9ff75",
+						"exec": [
+							"pm.environment.set(\"TOKEN\", pm.response.json().token)"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"folder": "3e2987d4-0e36-416c-9611-64ec0bf18b14",
+			"rawModeData": "{\r\n    \"password\": \"123456789\"\r\n}",
+			"headers": "Content-Type: application/json\n",
+			"pathVariables": {}
+		},
+		{
+			"id": "6cf9e4b8-8099-40d2-a0e3-965f87e5161e",
+			"name": "Update Password of Trainer User",
+			"url": "http://localhost:5000/api/v1/trainer/auth/updatepassword",
+			"description": "",
+			"data": [],
+			"dataOptions": {
+				"raw": {
+					"language": "json"
+				}
+			},
+			"dataMode": "raw",
+			"headerData": [
+				{
+					"key": "Content-Type",
+					"value": "application/json",
+					"description": "Content Type JSON",
+					"type": "text",
+					"enabled": true
+				}
+			],
+			"method": "PUT",
+			"pathVariableData": [],
+			"queryParams": [],
+			"auth": null,
+			"events": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "f77a6ff7-6269-4a47-b23e-49acdef9ff75",
+						"exec": [
+							"pm.environment.set(\"TOKEN\", pm.response.json().token)"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"folder": "bdbdc1ee-fdcd-4a0d-ba8f-f20ee78def61",
+			"rawModeData": "{\r\n    \"currentPassword\": \"123456\",\r\n    \"newPassword\": \"1234567\"\r\n\r\n}",
+			"headers": "Content-Type: application/json\n",
+			"pathVariables": {}
+		},
+		{
+			"id": "746fb011-ffee-43ce-8aaf-858e4e17428e",
+			"name": "Login Trainer User",
+			"url": "http://localhost:5000/api/v1/trainer/auth/login",
+			"description": "",
+			"data": [],
+			"dataOptions": {
+				"raw": {
+					"language": "json"
+				}
+			},
+			"dataMode": "raw",
+			"headerData": [
+				{
+					"key": "Content-Type",
+					"value": "application/json",
+					"description": "Content Type JSON",
+					"type": "text",
+					"enabled": true
+				}
+			],
+			"method": "POST",
+			"pathVariableData": [],
+			"queryParams": [],
+			"auth": null,
+			"events": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "f77a6ff7-6269-4a47-b23e-49acdef9ff75",
+						"exec": [
+							"pm.environment.set(\"TOKEN\", pm.response.json().token)"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"folder": "bdbdc1ee-fdcd-4a0d-ba8f-f20ee78def61",
+			"rawModeData": "{\r\n    \"email\": \"k@gmail.com\",\r\n    \"password\": \"1234567\"\r\n\r\n}",
+			"headers": "Content-Type: application/json\n",
+			"pathVariables": {}
+		},
+		{
+			"id": "77522903-c78c-4555-b358-1b96264a4948",
+			"name": "Forgot Password Trainer User",
+			"url": "http://localhost:5000/api/v1/trainer/auth/forgotpassword",
+			"description": "",
+			"data": [],
+			"dataOptions": {
+				"raw": {
+					"language": "json"
+				}
+			},
+			"dataMode": "raw",
+			"headerData": [
+				{
+					"key": "Content-Type",
+					"value": "application/json",
+					"description": "Content Type JSON",
+					"type": "text",
+					"enabled": true
+				}
+			],
+			"method": "POST",
+			"pathVariableData": [],
+			"queryParams": [],
+			"auth": null,
+			"events": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "f77a6ff7-6269-4a47-b23e-49acdef9ff75",
+						"exec": [
+							"pm.environment.set(\"TOKEN\", pm.response.json().token)"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"folder": "bdbdc1ee-fdcd-4a0d-ba8f-f20ee78def61",
+			"rawModeData": "{\r\n    \"email\": \"ks@gmail.com\"\r\n\r\n}",
+			"headers": "Content-Type: application/json\n",
+			"pathVariables": {}
+		},
+		{
+			"id": "a39a5657-c4b8-4722-a460-17dcfb4005d6",
+			"name": "Upload Trainer Photo by ID",
+			"url": "{{URL}}/api/v1/trainer/auth/5ee7c33e15276465b07a3a6c/photo",
+			"description": "",
+			"data": [
+				{
+					"key": "file",
+					"value": "/C:/Users/Karthik Sivacharan/Downloads/roshan.jpg",
+					"description": "",
+					"type": "file",
+					"enabled": true
+				}
+			],
+			"dataOptions": null,
+			"dataMode": "params",
+			"headerData": [
+				{
+					"description": "Content Type JSON",
+					"enabled": true,
+					"key": "Content-Type",
+					"type": "text",
+					"value": "application/json"
+				}
+			],
+			"method": "PUT",
+			"pathVariableData": [],
+			"queryParams": [],
+			"auth": {
+				"type": "bearer",
+				"bearer": [
+					{
+						"key": "token",
+						"value": "{{TOKEN}}"
+					}
+				]
+			},
+			"events": null,
+			"folder": "bdbdc1ee-fdcd-4a0d-ba8f-f20ee78def61",
+			"headers": "Content-Type: application/json\n",
+			"pathVariables": {}
+		},
+		{
+			"id": "a8d932f0-a442-41a0-be73-0a67d8d29aba",
+			"name": "Upload Client Photo by ID",
+			"url": "{{URL}}/api/v1/client/auth/5ee7d6386be702776034f2f5/photo",
+			"description": "",
+			"data": [
+				{
+					"key": "file",
+					"value": "/G:/[FreeCourseSite.com] Udemy - Node.js API Masterclass With Express & MongoDB/bootcamp.jpeg",
+					"description": "",
+					"type": "file",
+					"enabled": true
+				}
+			],
+			"dataOptions": null,
+			"dataMode": "params",
+			"headerData": [
+				{
+					"description": "Content Type JSON",
+					"enabled": true,
+					"key": "Content-Type",
+					"type": "text",
+					"value": "application/json"
+				}
+			],
+			"method": "PUT",
+			"pathVariableData": [],
+			"queryParams": [],
+			"auth": {
+				"type": "bearer",
+				"bearer": [
+					{
+						"key": "token",
+						"value": "{{TOKEN}}"
+					}
+				]
+			},
+			"events": null,
+			"folder": "3e2987d4-0e36-416c-9611-64ec0bf18b14",
+			"headers": "Content-Type: application/json\n",
+			"pathVariables": {}
+		},
+		{
+			"id": "b6ab5161-836a-477f-a527-f170ae8cde52",
+			"name": "Register Client User",
+			"url": "http://localhost:5000/api/v1/client/auth/register",
+			"description": "",
+			"data": [],
+			"dataOptions": {
+				"raw": {
+					"language": "json"
+				}
+			},
+			"dataMode": "raw",
+			"headerData": [
+				{
+					"key": "Content-Type",
+					"value": "application/json",
+					"description": "Content Type JSON",
+					"type": "text",
+					"enabled": true
+				}
+			],
+			"method": "POST",
+			"pathVariableData": [],
+			"queryParams": [],
+			"auth": null,
+			"events": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "acd57656-be32-4c36-8070-e98ad428407f",
+						"exec": [
+							"pm.environment.set(\"TOKEN\", pm.response.json().token)"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"folder": "3e2987d4-0e36-416c-9611-64ec0bf18b14",
+			"rawModeData": "{\r\n  \"firstName\": \"Anshul\",\r\n  \"lastName\":\"Ravikumar\",\r\n  \"email\": \"anshul@gmail.com\",\r\n  \"role\": \"client\",\r\n  \"clientType\":\"online\",\r\n  \"password\": \"123456\",\r\n  \"phone\": 9489869896,\r\n  \"fitnessGoal\": \"I want to get fit\",\r\n  \"trainer\": \"5ee7c33e15276465b07a3a6c\",\r\n  \"timeZone\": \"Asia/Calcutta\",\r\n  \"height\": 6,\r\n  \"weight\": 75,\r\n  \"gender\": \"male\",\r\n  \"dob\": \"1997-06-15T18:51:42.702+00:00\"\r\n\r\n}",
+			"headers": "Content-Type: application/json\n",
+			"pathVariables": {}
+		},
+		{
+			"id": "bb6f88fb-e43b-45a6-aa84-4427a2412c14",
+			"name": "Update Logged In Trainer User Details",
+			"url": "http://localhost:5000/api/v1/trainer/auth/updatedetails",
+			"description": "",
+			"data": [],
+			"dataOptions": {
+				"raw": {
+					"language": "json"
+				}
+			},
+			"dataMode": "raw",
+			"headerData": [
+				{
+					"key": "Content-Type",
+					"value": "application/json",
+					"description": "Content Type JSON",
+					"type": "text",
+					"enabled": true
+				}
+			],
+			"method": "PUT",
+			"pathVariableData": [],
+			"queryParams": [],
+			"auth": null,
+			"events": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "acd57656-be32-4c36-8070-e98ad428407f",
+						"exec": [
+							"pm.environment.set(\"TOKEN\", pm.response.json().token)"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"folder": "bdbdc1ee-fdcd-4a0d-ba8f-f20ee78def61",
+			"rawModeData": "{\r\n    \"firstName\" : \"K\",\r\n    \"lastName\": \"S\",\r\n    \"email\": \"ks@gmail.com\",\r\n    \"trainerType\" : \"Yoga\",\r\n    \"numberOfClients\": \"1-5\"\r\n\r\n}",
+			"headers": "Content-Type: application/json\n",
+			"pathVariables": {}
+		},
+		{
+			"id": "d5f948c0-d4f2-4d3b-b39e-2c998b51aa43",
+			"name": "Update Password of Client User",
+			"url": "http://localhost:5000/api/v1/client/auth/updatepassword",
+			"description": "",
+			"data": [],
+			"dataOptions": {
+				"raw": {
+					"language": "json"
+				}
+			},
+			"dataMode": "raw",
+			"headerData": [
+				{
+					"key": "Content-Type",
+					"value": "application/json",
+					"description": "Content Type JSON",
+					"type": "text",
+					"enabled": true
+				}
+			],
+			"method": "PUT",
+			"pathVariableData": [],
+			"queryParams": [],
+			"auth": null,
+			"events": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "f77a6ff7-6269-4a47-b23e-49acdef9ff75",
+						"exec": [
+							"pm.environment.set(\"TOKEN\", pm.response.json().token)"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"folder": "3e2987d4-0e36-416c-9611-64ec0bf18b14",
+			"rawModeData": "{\r\n    \"currentPassword\": \"123456\",\r\n    \"newPassword\": \"1234567\"\r\n\r\n}",
+			"headers": "Content-Type: application/json\n",
+			"pathVariables": {}
+		},
+		{
+			"id": "d7f45edf-33f0-4a3f-aad6-9ea302d8babf",
+			"name": "Register Trainer User",
+			"url": "http://localhost:5000/api/v1/trainer/auth/register",
+			"description": "",
+			"data": [],
+			"dataOptions": {
+				"raw": {
+					"language": "json"
+				}
+			},
+			"dataMode": "raw",
+			"headerData": [
+				{
+					"key": "Content-Type",
+					"value": "application/json",
+					"description": "Content Type JSON",
+					"type": "text",
+					"enabled": true
+				}
+			],
+			"method": "POST",
+			"pathVariableData": [],
+			"queryParams": [],
+			"auth": null,
+			"events": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "acd57656-be32-4c36-8070-e98ad428407f",
+						"exec": [
+							"pm.environment.set(\"TOKEN\", pm.response.json().token)"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"folder": "bdbdc1ee-fdcd-4a0d-ba8f-f20ee78def61",
+			"rawModeData": "{\r\n    \"firstName\" : \"Karthik123\",\r\n    \"lastName\": \"Sivacharan\",\r\n    \"email\": \"k123@gmail.com\",\r\n    \"trainerType\" : \"HIIT\",\r\n    \"numberOfClients\": \"5-10\",\r\n    \"password\": \"123456\"\r\n\r\n\r\n}",
+			"headers": "Content-Type: application/json\n",
+			"pathVariables": {}
+		},
+		{
+			"id": "df591ee4-ef54-4b5b-b247-c01c17484012",
+			"name": "Get Logged In Trainer User",
+			"url": "http://localhost:5000/api/v1/trainer/auth/me",
+			"description": "",
+			"data": [],
+			"dataOptions": {
+				"raw": {
+					"language": "json"
+				}
+			},
+			"dataMode": "raw",
+			"headerData": [
+				{
+					"key": "Content-Type",
+					"value": "application/json",
+					"description": "Content Type JSON",
+					"type": "text",
+					"enabled": true
+				}
+			],
+			"method": "GET",
+			"pathVariableData": [],
+			"queryParams": [],
+			"auth": {
+				"type": "bearer",
+				"bearer": [
+					{
+						"key": "token",
+						"value": "{{TOKEN}}"
+					}
+				]
+			},
+			"events": null,
+			"folder": "bdbdc1ee-fdcd-4a0d-ba8f-f20ee78def61",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"rawModeData": "",
+			"headers": "Content-Type: application/json\n",
+			"pathVariables": {}
+		},
+		{
+			"id": "e7cf2dc8-4056-4f5f-91b8-4c3be8d7eb1e",
+			"name": "Logout Trainer User",
+			"url": "http://localhost:5000/api/v1/trainer/auth/logout",
+			"description": "",
+			"data": [],
+			"dataOptions": {
+				"raw": {
+					"language": "json"
+				}
+			},
+			"dataMode": "raw",
+			"headerData": [
+				{
+					"key": "Content-Type",
+					"value": "application/json",
+					"description": "Content Type JSON",
+					"type": "text",
+					"enabled": true
+				}
+			],
+			"method": "GET",
+			"pathVariableData": [],
+			"queryParams": [],
+			"auth": null,
+			"events": null,
+			"folder": "bdbdc1ee-fdcd-4a0d-ba8f-f20ee78def61",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"rawModeData": "",
+			"headers": "Content-Type: application/json\n",
+			"pathVariables": {}
+		},
+		{
+			"id": "e9b382f5-65e2-4389-bb92-55eb8fe354e8",
+			"name": "Forgot Password Client User",
+			"url": "http://localhost:5000/api/v1/client/auth/forgotpassword",
+			"description": "",
+			"data": [],
+			"dataOptions": {
+				"raw": {
+					"language": "json"
+				}
+			},
+			"dataMode": "raw",
+			"headerData": [
+				{
+					"key": "Content-Type",
+					"value": "application/json",
+					"description": "Content Type JSON",
+					"type": "text",
+					"enabled": true
+				}
+			],
+			"method": "POST",
+			"pathVariableData": [],
+			"queryParams": [],
+			"auth": null,
+			"events": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "f77a6ff7-6269-4a47-b23e-49acdef9ff75",
+						"exec": [
+							"pm.environment.set(\"TOKEN\", pm.response.json().token)"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"folder": "3e2987d4-0e36-416c-9611-64ec0bf18b14",
+			"rawModeData": "{\r\n    \"email\": \"ansh@gmail.com\"\r\n\r\n}",
+			"headers": "Content-Type: application/json\n",
+			"pathVariables": {}
+		},
+		{
+			"id": "f22fe8ae-e86d-4972-b37d-e214df202f58",
+			"name": "Update Logged In Client User Details",
+			"url": "http://localhost:5000/api/v1/client/auth/updatedetails",
+			"description": "",
+			"data": [],
+			"dataOptions": {
+				"raw": {
+					"language": "json"
+				}
+			},
+			"dataMode": "raw",
+			"headerData": [
+				{
+					"key": "Content-Type",
+					"value": "application/json",
+					"description": "Content Type JSON",
+					"type": "text",
+					"enabled": true
+				}
+			],
+			"method": "PUT",
+			"pathVariableData": [],
+			"queryParams": [],
+			"auth": null,
+			"events": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "acd57656-be32-4c36-8070-e98ad428407f",
+						"exec": [
+							"pm.environment.set(\"TOKEN\", pm.response.json().token)"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"folder": "3e2987d4-0e36-416c-9611-64ec0bf18b14",
+			"rawModeData": "{\r\n\"firstName\": \"Ansh\",\r\n    \"lastName\": \"Ravi\",\r\n    \"email\": \"ansh@gmail.com\",\r\n    \"phone\": \"9876543210\",\r\n    \"fitnessGoal\": \"Want to reduce weight\",\r\n    \"timeZone\": \"US\",\r\n    \"height\": 5,\r\n    \"weight\": 56\r\n\r\n}",
+			"headers": "Content-Type: application/json\n",
+			"pathVariables": {}
+		}
+	]
+}
