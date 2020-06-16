@@ -332,6 +332,16 @@ exports.addClient = asyncHandler(async (req, res, next) => {
   }
 });
 
+// @desc     Get All Clients of the trainer
+// @route    POST /api/v1/auth/getclients
+// @access   Private
+exports.getClients = asyncHandler(async (req, res, next) => {
+  //user id will come from auth middleware's response
+  const clients = await Client.find({ trainer: req.trainer.id });
+
+  res.status(200).json({ success: true, data: clients });
+});
+
 //Custom function to create cookie and token
 //Get token from model, create cookie ans send response
 const sendTokenResponse = (trainer, statusCode, res) => {
