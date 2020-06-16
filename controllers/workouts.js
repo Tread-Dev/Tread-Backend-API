@@ -111,7 +111,7 @@ exports.updateWorkout = asyncHandler(async (req, res, next) => {
     );
   }
 
-  //Add current logged IN trainer's ID to the body
+  //Add current logged in trainer's ID to the body
   req.body.trainer = req.trainer.id;
   workout = await Workout.findOneAndUpdate(req.params.workoutID, req.body, {
     new: true,

@@ -24,29 +24,24 @@ exports.register = asyncHandler(async (req, res, next) => {
     dob,
   } = req.body;
 
-  //Update client user details
-  const clientDetails = {
-    firstName: firstName,
-    lastName: lastName,
-    password: password,
-    phone: phone,
-    fitnessGoal: fitnessGoal,
-    timeZone: timeZone,
-    height: height,
-    weight: weight,
-    gender: gender,
-    dob: dob,
-    verified: true,
-  };
+  //Find the client
+  const client = await Client.findById(req.params.clientID);
 
-  const client = await Client.findByIdAndUpdate(
-    req.params.clientID,
-    clientDetails,
-    {
-      new: true,
-      runValidators: true,
-    }
-  );
+  //Update client user details
+  client.firstName = firstName;
+  client.lastName = lastName;
+  client.password = password;
+  client.phone = phone;
+  client.fitnessGoal = fitnessGoal;
+  client.timeZone = timeZone;
+  client.height = height;
+  client.weight = weight;
+  client.gender = gender;
+  client.dob = dob;
+  client.verified = true;
+
+  //Save to DB
+  await client.save();
 
   //Call sendTokenResponse to generate token and send it in a cookie
   sendTokenResponse(client, 200, res);
