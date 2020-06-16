@@ -10,7 +10,6 @@ const ClientSchema = new mongoose.Schema({
   },
   lastName: {
     type: String,
-    required: [true, 'Please add a last name'],
   },
   email: {
     type: String,
@@ -26,14 +25,14 @@ const ClientSchema = new mongoose.Schema({
     enum: ['client'],
     default: 'client',
   },
-  clinetType: {
+  clientType: {
     type: String,
     enum: ['online', 'offline', 'hybrid'],
     required: [true, 'Please add a client type'],
   },
   password: {
     type: String,
-    required: [true, 'Please add a password'],
+    // required: [true, 'Please add a password'],
     minlength: 6,
     select: false,
   },
@@ -47,7 +46,6 @@ const ClientSchema = new mongoose.Schema({
   },
   fitnessGoal: {
     type: String,
-    required: true,
   },
   trainer: {
     type: mongoose.Schema.ObjectId,
@@ -69,6 +67,10 @@ const ClientSchema = new mongoose.Schema({
   },
   dob: {
     type: Date,
+  },
+  verified: {
+    type: Boolean,
+    default: false,
   },
   resetPasswordToken: String,
   resetPasswordExpire: Date,

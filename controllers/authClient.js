@@ -5,21 +5,18 @@ const sendEmail = require('../utils/sendEmail');
 const crypto = require('crypto');
 const path = require('path');
 
-// @desc     Register Trainer User
-// @route    POST /api/v1/trainer/auth/register
+// @desc     Register Client User
+// @desc     The user will alredy get registered when a trainer adds them as a client. The client signup will just update their existing details in the DB
+// @route    PUT /api/v1/trainer/auth/register
 // @access   Public
 exports.register = asyncHandler(async (req, res, next) => {
   //Pull out user information from the body
   const {
     firstName,
     lastName,
-    email,
     password,
-    role,
-    clientType,
     phone,
     fitnessGoal,
-    trainer,
     timeZone,
     height,
     weight,
@@ -27,23 +24,29 @@ exports.register = asyncHandler(async (req, res, next) => {
     dob,
   } = req.body;
 
-  //Create new user
-  const client = await Client.create({
+  //Update client user details
+  const clientDetails = {
     firstName: firstName,
     lastName: lastName,
-    email: email,
     password: password,
-    role: role,
-    clientType: clientType,
     phone: phone,
     fitnessGoal: fitnessGoal,
-    trainer: trainer,
     timeZone: timeZone,
     height: height,
     weight: weight,
     gender: gender,
     dob: dob,
-  });
+    verified: true,
+  };
+
+  const client = await Client.findByIdAndUpdate(
+    req.params.clientID,
+    clientDetails,
+    {
+      new: true,
+      runValidators: true,
+    }
+  );
 
   //Call sendTokenResponse to generate token and send it in a cookie
   sendTokenResponse(client, 200, res);

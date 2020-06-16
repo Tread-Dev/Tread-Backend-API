@@ -11,6 +11,7 @@ const {
   forgotPassword,
   resetPassword,
   trainerPhotoUpload,
+  addClient,
 } = require('../controllers/authTrainer');
 
 //Auth Protect Middleware
@@ -29,5 +30,8 @@ router.put('/resetpassword/:resettoken', resetPassword);
 
 //Route /api/v1/trainer/:id/photo
 router.route('/:id/photo').put(protect, trainerPhotoUpload);
+
+//Route /api/v1/trainer/:id/photo
+router.route('/addclient').post(protect, addClient);
 
 module.exports = router;

@@ -17,7 +17,8 @@ const {
 const { protect } = require('../middleware/authClient');
 
 //Create route
-router.post('/register', register);
+//Register will be a put because when a trainer adds a client, a profile already gets added to Client DB. On client login we just update the DB.
+router.put('/register/:clientID', register);
 router.post('/login', login);
 router.get('/logout', logout);
 router.get('/me', protect, getMe);

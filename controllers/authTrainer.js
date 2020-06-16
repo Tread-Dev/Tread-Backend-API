@@ -1,6 +1,7 @@
 const errorResponse = require('../utils/errorResponse');
 const asyncHandler = require('../middleware/async');
 const Trainer = require('../models/Trainer');
+const Client = require('../models/Client');
 const sendEmail = require('../utils/sendEmail');
 const crypto = require('crypto');
 const path = require('path');
@@ -279,6 +280,56 @@ exports.trainerPhotoUpload = asyncHandler(async (req, res, next) => {
       res.status(200).json({ success: true, data: file.name });
     }
   );
+});
+
+// @desc     Add New Client to Trainer
+// @route    POST /api/v1/trainer/auth/addclient
+// @access   Public
+exports.addClient = asyncHandler(async (req, res, next) => {
+  //Pull out user information from the body
+  const { firstName, lastName, email, clientType } = req.body;
+  let trainer = req.trainer.id;
+
+  //Create new Clent
+  const client = await Client.create({
+    firstName: firstName,
+    lastName: lastName,
+    email: email,
+    clientType: clientType,
+    trainer: trainer,
+  });
+
+  if (client) {
+    //Send mail to client
+    //Create reset URL
+    const signUpURL = `${req.protocol}://${req.get(
+      'host'
+    )}/api/v1/client/auth/register/${client._id}`;
+
+    console.log(signUpURL);
+
+    //Create message with reset URL
+    const message = `Kindly make a put request with the req body object containing the client info to : \n\n ${signUpURL}`;
+
+    //Send Email
+    try {
+      await sendEmail({
+        email: client.email,
+        subject: 'Tread - Client Signup',
+        message: message,
+      });
+
+      //Send back response
+      res
+        .status(200)
+        .json({ success: true, data: client, msg: 'Mail sent - check inbox' });
+    } catch (err) {
+      console.log(err);
+      return next(new errorResponse('Email could not be sent', 500));
+    }
+  } else {
+    return next(new errorResponse('Client could not be added!', 401));
+  }
 });
 
 //Custom function to create cookie and token
