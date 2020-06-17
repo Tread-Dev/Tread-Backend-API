@@ -7,6 +7,7 @@ const {
   getWorkoutById,
   updateWorkout,
   deleteWorkout,
+  assignWorkout,
 } = require('../controllers/workouts');
 
 const Workouts = require('../models/Workout');
@@ -24,5 +25,8 @@ router
   .get(protect, getWorkoutById)
   .put(protect, updateWorkout)
   .delete(protect, deleteWorkout);
+
+//Route /api/v1/trainer/assignworkout/:clientID
+router.route('/assignworkout/:clientID').put(protect, assignWorkout);
 
 module.exports = router;

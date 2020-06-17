@@ -44,4 +44,7 @@ router
   .route('/getclients')
   .get(protect, advancedResults(Client, 'clients'), getClients);
 
+//Route /api/v1/trainer/assignworkout/:clientID
+// router.route('/assignworkout/:clientID').put(protect, assignWorkout);
+
 module.exports = router;

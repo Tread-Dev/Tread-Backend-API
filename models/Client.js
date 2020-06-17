@@ -78,6 +78,60 @@ const ClientSchema = new mongoose.Schema({
     type: Date,
     default: Date.now,
   },
+  assignedWorkouts: [
+    {
+      workoutID: {
+        type: mongoose.Schema.ObjectId,
+        ref: 'Workout',
+        required: true,
+      },
+      name: {
+        type: String,
+      },
+      description: {
+        type: String,
+      },
+      workoutObj: [
+        {
+          reps: Number,
+          time: Number,
+          rest: Number,
+          exerciseID: {
+            type: mongoose.Schema.ObjectId,
+            ref: 'Exercise',
+          },
+          cardIndex: Number,
+        },
+      ],
+      assignedDate: {
+        type: Date,
+        required: [true, 'Please assign a date for the workout'],
+      },
+      completed: {
+        type: Boolean,
+        default: false,
+      },
+      numberOfAssignedExercises: {
+        type: Number,
+        default: 0,
+      },
+      numberOfCompletedExercises: {
+        type: Number,
+        default: 0,
+      },
+      time: {
+        type: Number,
+        default: 0,
+      },
+      comments: {
+        type: String,
+      },
+      rating: {
+        type: Number,
+        default: 0,
+      },
+    },
+  ],
 });
 
 //Password encrypt middleware using bcrypt

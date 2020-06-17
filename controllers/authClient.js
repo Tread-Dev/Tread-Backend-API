@@ -292,6 +292,28 @@ exports.clientPhotoUpload = asyncHandler(async (req, res, next) => {
   );
 });
 
+// @desc     Get Workouts by Client ID
+// @route    GET /api/v1/client/workouts/
+// @access   Private
+exports.getWorkouts = asyncHandler(async (req, res, next) => {
+  //Fetch workouts by ID
+  console.log(req.client.id);
+  const client = await Client.find({ _id: req.client.id });
+
+  //Check if workouts exists - Error handling
+  if (!client) {
+    return next(
+      new errorResponse(`Client not found with ID of ${req.client.id}`, 404)
+    );
+  }
+
+  //Get assigned workouts of the logged in client
+  console.log(client[0].assignedWorkouts);
+
+  //Send workoutObj from client document in DB
+  res.status(200).json({ success: true, data: client[0].assignedWorkouts });
+});
+
 //Custom function to create cookie and token
 //Get token from model, create cookie ans send response
 const sendTokenResponse = (client, statusCode, res) => {

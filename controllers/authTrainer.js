@@ -1,6 +1,7 @@
 const errorResponse = require('../utils/errorResponse');
 const asyncHandler = require('../middleware/async');
 const Trainer = require('../models/Trainer');
+const Workout = require('../models/Workout');
 const Client = require('../models/Client');
 const sendEmail = require('../utils/sendEmail');
 const crypto = require('crypto');
@@ -337,10 +338,12 @@ exports.addClient = asyncHandler(async (req, res, next) => {
 // @access   Private
 exports.getClients = asyncHandler(async (req, res, next) => {
   //user id will come from auth middleware's response
-  // const clients = await Client.find({ trainer: req.trainer.id });
+  const clients = await Client.find({ trainer: req.trainer.id });
 
-  // res.status(200).json({ success: true, data: clients });
-  res.status(200).json(res.advancedResults);
+  res.status(200).json({ success: true, data: clients });
+
+  //Advacned results
+  // res.status(200).json(res.advancedResults);
 });
 
 //Custom function to create cookie and token

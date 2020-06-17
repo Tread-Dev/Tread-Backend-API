@@ -1,5 +1,6 @@
 const Workout = require('../models/Workout');
 const Trainer = require('../models/Trainer');
+const Client = require('../models/Client');
 const errorResponse = require('../utils/errorResponse');
 const asyncHandler = require('../middleware/async');
 
@@ -155,4 +156,56 @@ exports.deleteWorkout = asyncHandler(async (req, res, next) => {
   workout.remove();
 
   res.status(201).json({ success: true, data: {} });
+});
+
+// @desc     Assign workout for client
+// @route    PUT /api/v1/trainer/workouts/assignworkout/:clientID
+// @access   Private
+exports.assignWorkout = asyncHandler(async (req, res, next) => {
+  //Get workout Obj from the workout document using req.body.workoutID
+  console.log(req.body.workoutID);
+  const workout = await Workout.find({ _id: req.body.workoutID });
+
+  //Check if workout exists - Error handling
+  if (!workout) {
+    return next(
+      new errorResponse(
+        `Workout not found with ID of ${req.body.workoutID}`,
+        404
+      )
+    );
+  }
+
+  // console.log(workout[0].workoutObj);
+
+  //Take the workout details from the workout object
+  const { workoutObj, name, description } = workout[0];
+
+  // console.log(workoutObj);
+  // console.log(name);
+  // console.log(description);
+
+  //Take client ID from req params
+  const clientID = req.params.clientID;
+  //Take only the essential fields from req.body to update - Ignore password, role etc if at all passed
+  const fieldsToUpdate = {
+    workoutID: req.body.workoutID,
+    assignedDate: req.body.assignedDate,
+    completed: req.body.completed,
+    workoutObj: workoutObj,
+    name: name,
+    description: description,
+  };
+
+  //Client id will come from auth middleware's response
+  const client = await Client.findByIdAndUpdate(
+    clientID,
+    { $push: { assignedWorkouts: fieldsToUpdate } },
+    {
+      new: true,
+      runValidators: true,
+    }
+  );
+
+  res.status(200).json({ success: true, data: client });
 });
