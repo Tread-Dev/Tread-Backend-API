@@ -29,6 +29,6 @@ router.post('/forgotpassword', forgotPassword);
 router.put('/resetpassword/:resettoken', resetPassword);
 
 //Route /api/v1/client/:id/photo
-router.route('/:id/photo').put(protect, clientPhotoUpload);
+router.route('/photo').put(protect, clientPhotoUpload);
 
 module.exports = router;

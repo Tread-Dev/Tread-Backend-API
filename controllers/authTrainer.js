@@ -215,18 +215,18 @@ exports.resetPassword = asyncHandler(async (req, res, next) => {
   sendTokenResponse(trainer, 200, res);
 });
 
-// @desc     Upload photo for Client
-// @route    PUT /api/v1/trainer/:id/photo
+// @desc     Upload photo for Trainer
+// @route    PUT /api/v1/trainer/auth/photo
 // @access   Private
 exports.trainerPhotoUpload = asyncHandler(async (req, res, next) => {
   //Update Item in DB based on ID
   console.log(req.body);
-  const trainer = await Trainer.findById(req.params.id);
+  const trainer = await Trainer.findById(req.trainer.id);
 
   //Check if bootcamp exists - Error handling
   if (!trainer) {
     return next(
-      new errorResponse(`Bootcamp not found with ID of ${req.params.id}`, 404)
+      new errorResponse(`Trainer not found with ID of ${req.trainer.id}`, 404)
     );
   }
 
@@ -275,7 +275,7 @@ exports.trainerPhotoUpload = asyncHandler(async (req, res, next) => {
       }
 
       //Insert file name into DB
-      await Trainer.findByIdAndUpdate(req.params.id, { photo: file.name });
+      await Trainer.findByIdAndUpdate(req.trainer.id, { photo: file.name });
 
       res.status(200).json({ success: true, data: file.name });
     }

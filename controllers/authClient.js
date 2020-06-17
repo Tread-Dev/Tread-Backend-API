@@ -231,12 +231,12 @@ exports.resetPassword = asyncHandler(async (req, res, next) => {
 exports.clientPhotoUpload = asyncHandler(async (req, res, next) => {
   //Update Item in DB based on ID
   console.log(req.body);
-  const client = await Client.findById(req.params.id);
+  const client = await Client.findById(req.client.id);
 
-  //Check if bootcamp exists - Error handling
+  //Check if Client exists - Error handling
   if (!client) {
     return next(
-      new errorResponse(`Bootcamp not found with ID of ${req.params.id}`, 404)
+      new errorResponse(`User not found with ID of ${req.client.id}`, 404)
     );
   }
 
@@ -285,7 +285,7 @@ exports.clientPhotoUpload = asyncHandler(async (req, res, next) => {
       }
 
       //Insert file name into DB
-      await Client.findByIdAndUpdate(req.params.id, { photo: file.name });
+      await Client.findByIdAndUpdate(req.client.id, { photo: file.name });
 
       res.status(200).json({ success: true, data: file.name });
     }

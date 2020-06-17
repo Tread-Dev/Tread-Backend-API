@@ -34,7 +34,7 @@ router.post('/forgotpassword', forgotPassword);
 router.put('/resetpassword/:resettoken', resetPassword);
 
 //Route /api/v1/trainer/:id/photo
-router.route('/:id/photo').put(protect, trainerPhotoUpload);
+router.route('/photo').put(protect, trainerPhotoUpload);
 
 //Route /api/v1/trainer/addclient
 router.route('/addclient').post(protect, addClient);
