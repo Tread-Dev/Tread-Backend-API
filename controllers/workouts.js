@@ -5,11 +5,11 @@ const errorResponse = require('../utils/errorResponse');
 const asyncHandler = require('../middleware/async');
 
 // @desc     Add workout
-// @route    POST /api/v1/trainer/:trainerId/exercise
+// @route    POST /api/v1/trainer/workouts
 // @access   Private
 exports.addWorkout = asyncHandler(async (req, res, next) => {
   // Trainer ID will be sent in the req body
-  //Check if the particular trainer to which the exercise needs to be added exists or not
+  //Check if the particular trainer to which the workout needs to be added exists or not
   const trainer = await Trainer.findById(req.trainer.id);
   if (!trainer) {
     return next(
@@ -20,11 +20,11 @@ exports.addWorkout = asyncHandler(async (req, res, next) => {
     );
   }
 
-  //Make sure the user is Bootcamp Owner
-  // if (bootcamp.user.toString() !== req.user.id && req.user.role !== 'admin') {
+  //Make sure the Trainer is Owner
+  // if (trainer.user.toString() !== req.user.id && req.user.role !== 'admin') {
   //   return next(
   //     new errorResponse(
-  //       `User with ID of ${req.user.id} is not authorized to add a course to Bootcamp -  ${bootcamp._id}`,
+  //       `User with ID of ${req.user.id} is not authorized to add a workout`,
   //       401
   //     )
   //   );
@@ -99,7 +99,7 @@ exports.updateWorkout = asyncHandler(async (req, res, next) => {
     );
   }
 
-  //Make sure the user is workout Owner
+  //Make sure the Trainer user is workout Owner
   if (
     workout.trainer.toString() !== req.trainer.id &&
     req.trainer.role !== 'admin'
@@ -197,7 +197,7 @@ exports.assignWorkout = asyncHandler(async (req, res, next) => {
     description: description,
   };
 
-  //Client id will come from auth middleware's response
+  //Client ID will come from auth middleware's response
   const client = await Client.findByIdAndUpdate(
     clientID,
     { $push: { assignedWorkouts: fieldsToUpdate } },

@@ -39,7 +39,7 @@ exports.protect = asyncHandler(async (req, res, next) => {
   }
 });
 
-//Grant access to specific roles (admin, publisher)
+//Grant access to specific roles (trainer, client)
 // exports.authorize = (...roles) => {
 //   return (req, res, next) => {
 //     if (!roles.includes(req.trainer.role)) {

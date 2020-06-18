@@ -4,7 +4,7 @@ const errorResponse = require('../utils/errorResponse');
 const asyncHandler = require('../middleware/async');
 
 // @desc     Add exercise
-// @route    POST /api/v1/trainer/:trainerId/exercise
+// @route    POST /api/v1/trainer/exercises
 // @access   Private
 exports.addExercise = asyncHandler(async (req, res, next) => {
   // Trainer ID will be sent in the req body
@@ -19,11 +19,11 @@ exports.addExercise = asyncHandler(async (req, res, next) => {
     );
   }
 
-  //Make sure the user is Bootcamp Owner
-  // if (bootcamp.user.toString() !== req.user.id && req.user.role !== 'admin') {
+  //Make sure the Trainer is Owner
+  // if (trainer.user.toString() !== req.user.id && req.user.role !== 'admin') {
   //   return next(
   //     new errorResponse(
-  //       `User with ID of ${req.user.id} is not authorized to add a course to Bootcamp -  ${bootcamp._id}`,
+  //       `User with ID of ${req.user.id} is not authorized to add an exercise`,
   //       401
   //     )
   //   );
@@ -88,7 +88,7 @@ exports.getExercisebyId = asyncHandler(async (req, res, next) => {
 exports.updateExercise = asyncHandler(async (req, res, next) => {
   //Update Item in DB based on ID
   console.log(req.body);
-  //Fintd bootcamp by ID
+  //Fint exercise by ID
   let exercise = await Exercise.findById(req.params.exerciseID);
 
   //Check if exercise exists - Error handling

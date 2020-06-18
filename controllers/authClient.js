@@ -7,10 +7,10 @@ const path = require('path');
 
 // @desc     Register Client User
 // @desc     The user will alredy get registered when a trainer adds them as a client. The client signup will just update their existing details in the DB
-// @route    PUT /api/v1/trainer/auth/register
+// @route    PUT /api/v1/client/auth/register
 // @access   Public
 exports.register = asyncHandler(async (req, res, next) => {
-  //Pull out user information from the body
+  //Pull out client user information from the body
   const {
     firstName,
     lastName,
@@ -59,7 +59,7 @@ exports.login = asyncHandler(async (req, res, next) => {
     return next(new errorResponse(`Please provide an email and password`, 400));
   }
 
-  //Check for User
+  //Check for Client user
   const client = await Client.findOne({ email: email }).select('+password');
 
   if (!client) {
@@ -77,11 +77,11 @@ exports.login = asyncHandler(async (req, res, next) => {
   sendTokenResponse(client, 200, res);
 });
 
-// @desc     Get Logged in User
+// @desc     Get Logged in Client User
 // @route    POST /api/v1/auth/me
 // @access   Private
 exports.getMe = asyncHandler(async (req, res, next) => {
-  //user id will come from auth middleware's response
+  //Client user ID will come from auth middleware's response
   const client = await Client.findById(req.client.id);
 
   res.status(200).json({ success: true, data: client });
@@ -124,11 +124,11 @@ exports.updateDetails = asyncHandler(async (req, res, next) => {
   res.status(200).json({ success: true, data: client });
 });
 
-// @desc     Update password of Logged in Trainer User
-// @route    PUT /api/v1/trainer/auth/updatepassword
+// @desc     Update password of Logged in Client User
+// @route    PUT /api/v1/client/auth/updatepassword
 // @access   Private
 exports.updatePassword = asyncHandler(async (req, res, next) => {
-  //user id will come from auth middleware's response
+  //Client user id will come from auth middleware's response
   const client = await Client.findById(req.client.id).select('+password');
 
   //Check if current password mathches
@@ -155,14 +155,14 @@ exports.forgotPassword = asyncHandler(async (req, res, next) => {
     return next(new errorResponse(`There is no user with that email`, 404));
   }
 
-  //Get reset token - getResetPasswordToken() defined in user model
+  //Get reset token - getResetPasswordToken() defined in Cleint user model
   const resetToken = client.getResetPasswordToken();
   console.log(resetToken);
 
   //Update token and expiry in Databse
   await client.save({ validateBeforeSave: false });
 
-  //Send Mail to user
+  //Send Mail to Client user
   //Create reset URL
   const resetURL = `${req.protocol}://${req.get(
     'host'
@@ -195,7 +195,7 @@ exports.forgotPassword = asyncHandler(async (req, res, next) => {
 });
 
 // @desc     Reset Password
-// @route    PUT /api/v1/trainer/auth/resetpassword:resettoken
+// @route    PUT /api/v1/client/auth/resetpassword:resettoken
 // @access   Private
 exports.resetPassword = asyncHandler(async (req, res, next) => {
   //Get hashed token
@@ -210,7 +210,7 @@ exports.resetPassword = asyncHandler(async (req, res, next) => {
     resetPasswordExpire: { $gt: Date.now() },
   });
 
-  //Find if such a user exits // token expired
+  //Find if such a client user exits // token expired
   if (!client) {
     return next(new errorResponse('Invalid Token', 400));
   }
@@ -240,11 +240,11 @@ exports.clientPhotoUpload = asyncHandler(async (req, res, next) => {
     );
   }
 
-  //Make sure the user is Bootcamp Owner
+  //Make sure the Cleint user is Owner
   // if (client.user.toString() !== req.user.id && req.user.role !== 'admin') {
   //   return next(
   //     new errorResponse(
-  //       `User with ID of ${req.params.id} is not authorized to update bootcamp photo`,
+  //       `User with ID of ${req.params.id} is not authorized to update Client photo`,
   //       401
   //     )
   //   );
@@ -271,7 +271,7 @@ exports.clientPhotoUpload = asyncHandler(async (req, res, next) => {
     );
   }
 
-  //Rename file name according to Bootcamp ID and extension
+  //Rename file name according to Client ID and extension
   file.name = `photo_${client._id}${path.parse(file.name).ext}`;
   console.log(file.name);
 

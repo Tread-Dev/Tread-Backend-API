@@ -22,7 +22,7 @@ exports.register = asyncHandler(async (req, res, next) => {
     numberOfClients,
   } = req.body;
 
-  //Create new user
+  //Create new Trainer user
   const trainer = await Trainer.create({
     firstName: firstName,
     lastName: lastName,
@@ -49,14 +49,14 @@ exports.login = asyncHandler(async (req, res, next) => {
     return next(new errorResponse(`Please provide an email and password`, 400));
   }
 
-  //Check for User
+  //Check for Trainer User
   const trainer = await Trainer.findOne({ email: email }).select('+password');
 
   if (!trainer) {
     return next(new errorResponse(`Invalid credentials`, 401));
   }
 
-  //Check if password matches | *user not User*
+  //Check if password matches | *trainer not Trainer*
   const isMatch = await trainer.matchPassword(password);
 
   if (!isMatch) {
@@ -67,7 +67,7 @@ exports.login = asyncHandler(async (req, res, next) => {
   sendTokenResponse(trainer, 200, res);
 });
 
-// @desc     Get Logged in User
+// @desc     Get Logged in Trainer User
 // @route    POST /api/v1/auth/me
 // @access   Private
 exports.getMe = asyncHandler(async (req, res, next) => {
@@ -102,7 +102,7 @@ exports.updateDetails = asyncHandler(async (req, res, next) => {
     numberOfClients: req.body.numberOfClients,
   };
 
-  //Trainer id will come from auth middleware's response
+  //Trainer ID will come from auth middleware's response
   const trainer = await Trainer.findByIdAndUpdate(
     req.trainer.id,
     fieldsToUpdate,
@@ -141,7 +141,7 @@ exports.forgotPassword = asyncHandler(async (req, res, next) => {
   //Find the account associated with this email
   const trainer = await Trainer.findOne({ email: req.body.email });
 
-  //Check if user exists
+  //Check if Trainer user exists
   if (!trainer) {
     return next(new errorResponse(`There is no user with that email`, 404));
   }
@@ -231,11 +231,11 @@ exports.trainerPhotoUpload = asyncHandler(async (req, res, next) => {
     );
   }
 
-  //Make sure the user is Bootcamp Owner
-  // if (client.user.toString() !== req.user.id && req.user.role !== 'admin') {
+  //Make sure the Trainer is Owner
+  // if (trainer.user.toString() !== req.user.id && req.user.role !== 'admin') {
   //   return next(
   //     new errorResponse(
-  //       `User with ID of ${req.params.id} is not authorized to update bootcamp photo`,
+  //       `User with ID of ${req.params.id} is not authorized to update Trainer photo`,
   //       401
   //     )
   //   );
@@ -262,7 +262,7 @@ exports.trainerPhotoUpload = asyncHandler(async (req, res, next) => {
     );
   }
 
-  //Rename file name according to Bootcamp ID and extension
+  //Rename file name according to Trainer ID and extension
   file.name = `photo_${trainer._id}${path.parse(file.name).ext}`;
   console.log(file.name);
 
@@ -334,7 +334,7 @@ exports.addClient = asyncHandler(async (req, res, next) => {
 });
 
 // @desc     Get All Clients of the trainer
-// @route    POST /api/v1/auth/getclients
+// @route    POST /api/v1/trainer/auth/getclients
 // @access   Private
 exports.getClients = asyncHandler(async (req, res, next) => {
   //user id will come from auth middleware's response

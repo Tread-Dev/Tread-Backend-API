@@ -33,7 +33,7 @@ router.put('/updatepassword', protect, updatePassword);
 router.post('/forgotpassword', forgotPassword);
 router.put('/resetpassword/:resettoken', resetPassword);
 
-//Route /api/v1/trainer/:id/photo
+//Route /api/v1/trainer/photo
 router.route('/photo').put(protect, trainerPhotoUpload);
 
 //Route /api/v1/trainer/addclient
